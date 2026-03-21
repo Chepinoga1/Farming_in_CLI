@@ -2,13 +2,16 @@ import time
 from random import choice as rchoice
 
 def plant_crop(data, crop, grow_time):
-    data["fields"].append({
-        "crop": crop,
-        "planted_at": int(time.time()),
-        "grow_time": grow_time
-    })
-    data["inv"][crop]["seeds"] -=1
-    print(f"Planted {crop}")
+    if data["inv"][crop]["seeds"] > 0:
+        data["fields"].append({
+            "crop": crop,
+            "planted_at": int(time.time()),
+            "grow_time": grow_time
+        })
+        data["inv"][crop]["seeds"] -=1
+        print(f"Planted {crop}")
+    else:
+        print("No seeds = no crops, stupid")
 
 
 def update_game(data):

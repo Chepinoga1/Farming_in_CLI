@@ -19,7 +19,7 @@ def print_inventory(data):
     print(f"Balance: {data['balance']}")
     print(f"Active fields: {len(data['fields'])}")
     for i in range((len(data["inv"]))):
-        if data["inv"][list(data["inv"])[i]]["seeds"] !=0:
+        if data["inv"][list(data["inv"])[i]]["seeds"] !=0 or data["inv"][list(data["inv"])[i]]["crops"] != 0:
             print(f"Name: {list(data["inv"].keys())[i]}, Crops: {data["inv"][list(data["inv"].keys())[i]]['crops']}, Seeds: {data["inv"][list(data["inv"].keys())[i]]['seeds']}")
 
 

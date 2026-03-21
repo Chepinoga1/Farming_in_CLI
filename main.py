@@ -18,8 +18,12 @@ def handle_choice(choice, data):
         crop_data = action(data)
         if crop_data == "stop":
             return
+        if crop_data == "unknown_command":
+            print("Unknown command")
+            return
         plant_crop(data, crop_data["name"], crop_data["time"])
     elif action == print_inventory:
+        os.system('cls' if os.name == 'nt' else 'clear')
         action(data)
     elif action == exit:
         save_game(data)
@@ -33,6 +37,14 @@ def get_crop_choice(data):
     show_plant_menu(data)
     choice = get_input()
     if choice == "0":
+        return "stop"
+    try:
+        int(choice)
+    except:
+        print("Unknown command")
+        return "stop"
+    if int(choice) - 1 not in range(len(data["inv"])):
+        print("Unknown command")
         return "stop"
     crops = {}
     for i in range(len(data["inv"])):
@@ -50,6 +62,7 @@ def main():
 
     while True:
         update_game(data)
+        os.system('cls' if os.name == 'nt' else 'clear')
         show_menu(data)
 
         choice = get_input()
