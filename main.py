@@ -62,7 +62,6 @@ def main():
 
     while True:
         update_game(data)
-        os.system('cls' if os.name == 'nt' else 'clear')
         show_menu(data)
 
         choice = get_input()
