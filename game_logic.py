@@ -39,3 +39,11 @@ def buy_seeds(data, crop, count):
     data["balance"] -= int(count) * data["inv"][crop]["cost"]
     print(f"Buying {count} seeds {crop}")
     return None
+
+def sell_seeds(data, crop, count):
+    if int(count) <= 0 or int(count) > data["inv"][crop]["crops"]:
+        return "stop"
+    data["inv"][crop]["seeds"] -= int(count)
+    data["balance"] += int(count) * data["inv"][crop]["cost"]
+    print(f"Selling {count} seeds {crop}")
+    return None

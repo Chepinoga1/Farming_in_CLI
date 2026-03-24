@@ -1,6 +1,6 @@
 import os
 from ui import show_menu, get_input, print_inventory
-from game_logic import update_game, plant_crop, buy_seeds
+from game_logic import update_game, plant_crop, buy_seeds, sell_seeds
 from storage import load_game, save_game
 
 
@@ -33,8 +33,11 @@ def handle_choice(choice, data):
         if crop == "unknown_command":
             print("Unknown command")
             return
-        eror = buy_seeds(data, crop[0]["name"], crop[1])
-        if eror == "stop":
+        if choice == "1":
+            buy_seeds(data, crop[0]["name"], crop[1])
+        elif choice == "2":
+            sell_seeds(data, crop[0]["name"], crop[1])
+        else:
             print("Invalid, suka")
     elif action == exit:
         save_game(data)
@@ -93,12 +96,35 @@ def shop(data):
             int(count)
         except:
             print("Unknown command")
-            return "stop"
+            return
         return crops.get(choice), count
 
     elif choice == "2":
         print("Coming soon")
-        return "stop"
+        print_shop(data)
+        choice = get_input()
+        if choice == "0":
+            return "stop"
+        try:
+            int(choice)
+        except:
+            print("Unknown command")
+            return "stop"
+        if int(choice) - 1 not in range(len(data["inv"])):
+            print("Unknown command")
+            return "stop"
+        crops = {}
+        for i in range(len(data["inv"])):
+            crops[str(i + 1)] = {"name": list(data["inv"])[i]}
+        print("How many?")
+        count = input("> ")
+        try:
+            int(count)
+        except:
+            print("Unknown command")
+            return "stop"
+        return crops.get(choice), count
+        #return "stop"
     else :
         print("Unknown command")
         return "stop"
