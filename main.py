@@ -1,5 +1,5 @@
 import os
-from ui import show_menu, get_input, print_inventory
+from ui import show_menu, get_input, print_inventory, print_shop_sell
 from game_logic import update_game, plant_crop, buy_seeds, sell_seeds
 from storage import load_game, save_game
 
@@ -33,12 +33,6 @@ def handle_choice(choice, data):
         if crop == "unknown_command":
             print("Unknown command")
             return
-        if choice == "1":
-            buy_seeds(data, crop[0]["name"], crop[1])
-        elif choice == "2":
-            sell_seeds(data, crop[0]["name"], crop[1])
-        else:
-            print("Invalid, suka")
     elif action == exit:
         save_game(data)
         action()
@@ -97,11 +91,12 @@ def shop(data):
         except:
             print("Unknown command")
             return
-        return crops.get(choice), count
+        #return crops.get(choice), count
+        buy_seeds(data, crops.get(choice)["name"], count)
 
     elif choice == "2":
-        print("Coming soon")
-        print_shop(data)
+        #print("Coming soon")
+        print_shop_sell(data)
         choice = get_input()
         if choice == "0":
             return "stop"
@@ -123,8 +118,8 @@ def shop(data):
         except:
             print("Unknown command")
             return "stop"
-        return crops.get(choice), count
-        #return "stop"
+        #return crops.get(choice), count
+        sell_seeds(data, crops.get(choice)["name"], count)
     else :
         print("Unknown command")
         return "stop"

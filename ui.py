@@ -30,5 +30,12 @@ def print_shop(data):
         print(f"{i + 1}. Name: {list(data["inv"].keys())[i]}, Seeds: {data["inv"][list(data["inv"].keys())[i]]['shop_seeds']}, In inventory: {data["inv"][list(data["inv"].keys())[i]]['seeds']}, Cost: {data['inv'][list(data["inv"].keys())[i]]['cost']}")
     print("0. Back")
 
+def print_shop_sell(data):
+    print("\n=== SHOP ===")
+    print(f"Balance: {data['balance']}")
+    for i in range((len(data["inv"]))):
+        print(f"{i + 1}. Name: {list(data["inv"].keys())[i]}, Crops: {data["inv"][list(data["inv"].keys())[i]]['crops']}, Cost: {int(data['inv'][list(data["inv"].keys())[i]]['cost'] * 1.5)}")
+    print("0. Back")
+
 def get_input():
     return input("> ")
