@@ -8,12 +8,16 @@ def load_game():
             "peas": {
                 "seeds": 1,
                 "crops": 0,
-                "time": 10
+                "time": 10,
+                "shop_seeds": 10,
+                "cost": 10
             },
             "wheat": {
                 "seeds": 1,
                 "crops": 0,
-                "time": 20
+                "time": 20,
+                "shop_seeds": 10,
+                "cost": 20
             }
         }
         return {"balance": 100, "fields": [], "inv": inventory_start}

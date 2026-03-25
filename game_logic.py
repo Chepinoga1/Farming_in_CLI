@@ -31,3 +31,20 @@ def update_game(data):
         data["fields"].remove(field)
         harvest_crop(data, field["crop"])
 
+def buy_seeds(data, crop, count):
+    if int(count) <= 0 or int(count) > data["inv"][crop]["shop_seeds"] or data["balance"] < int(count) * data["inv"][crop]["cost"]:
+        return "stop"
+    data["inv"][crop]["shop_seeds"] -= int(count)
+    data["inv"][crop]["seeds"] += int(count)
+    data["balance"] -= int(count) * data["inv"][crop]["cost"]
+    print(f"Buying {count} seeds {crop}")
+    return None
+
+def sell_seeds(data, crop, count):
+    if int(count) <= 0 or int(count) > data["inv"][crop]["crops"]:
+        print("Invalid, suka!")
+        return "stop"
+    data["inv"][crop]["crops"] -= int(count)
+    data["balance"] += int(int(count) * data["inv"][crop]["cost"] * 1.5)
+    print(f"Selling {count} crops {crop}")
+    return None
