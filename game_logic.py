@@ -1,15 +1,16 @@
 import time
 from random import choice as rchoice
 
-def plant_crop(data, crop, grow_time):
-    if data["inv"][crop]["seeds"] > 0:
-        data["fields"].append({
-            "crop": crop,
-            "planted_at": int(time.time()),
-            "grow_time": grow_time
-        })
-        data["inv"][crop]["seeds"] -=1
-        print(f"Planted {crop}")
+def plant_crop(data, crop, grow_time, count):
+    if data["inv"][crop]["seeds"] >= int(count) and int(count) <= data["usable_fields"] - len(data["fields"]):
+        for i in range(int(count)):
+            data["fields"].append({
+                "crop": crop,
+                "planted_at": int(time.time()),
+                "grow_time": grow_time
+            })
+            data["inv"][crop]["seeds"] -=1
+        print(f"Planted {crop} {count}")
     else:
         print("No seeds = no crops, stupid")
 
@@ -48,3 +49,13 @@ def sell_seeds(data, crop, count):
     data["balance"] += int(int(count) * data["inv"][crop]["cost"] * 1.5)
     print(f"Selling {count} crops {crop}")
     return None
+
+def buy_fields(data, count):
+    if int(count) > 0 and int(count) * data["field_cost"] <= data["balance"]:
+        data["usable_fields"] += int(count)
+        data["balance"] -= int(count) * data["field_cost"]
+        print(f"Buying {count} fields")
+        return None
+    else:
+        print("Deneg net, sosi hui")
+        return None

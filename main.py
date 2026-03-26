@@ -1,6 +1,6 @@
 import os
-from ui import show_menu, get_input, print_inventory, print_shop_sell
-from game_logic import update_game, plant_crop, buy_seeds, sell_seeds
+from ui import show_menu, get_input, print_inventory, print_shop_sell, print_shop_fields
+from game_logic import update_game, plant_crop, buy_seeds, sell_seeds, buy_fields
 from storage import load_game, save_game
 
 
@@ -22,7 +22,9 @@ def handle_choice(choice, data):
         if crop_data == "unknown_command":
             print("Unknown command")
             return
-        plant_crop(data, crop_data["name"], crop_data["time"])
+        print("How many?")
+        count = get_input()
+        plant_crop(data, crop_data["name"], crop_data["time"], count)
     elif action == print_inventory:
         os.system('cls' if os.name == 'nt' else 'clear')
         action(data)
@@ -64,6 +66,7 @@ def shop(data):
     print("\n=== What would you like to do? ===")
     print("1. Buy seeds")
     print("2. Sell crops")
+    print("3. Buy fields")
     print("0. Back")
     choice = get_input()
     if choice == "0":
@@ -120,6 +123,25 @@ def shop(data):
             return "stop"
         #return crops.get(choice), count
         sell_seeds(data, crops.get(choice)["name"], count)
+    elif choice == "3":
+        print_shop_fields(data)
+        choice = get_input()
+        if choice == "0":
+            try:
+                int(choice)
+            except:
+                print("Unknown command")
+                return "stop"
+            return "stop"
+        if choice == "1":
+            print("How many?")
+            count = input("> ")
+            try:
+                int(count)
+            except:
+                print("Invalid, suka")
+                return "stop"
+            buy_fields(data, int(count))
     else :
         print("Unknown command")
         return "stop"

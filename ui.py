@@ -37,5 +37,12 @@ def print_shop_sell(data):
         print(f"{i + 1}. Name: {list(data["inv"].keys())[i]}, Crops: {data["inv"][list(data["inv"].keys())[i]]['crops']}, Cost: {int(data['inv'][list(data["inv"].keys())[i]]['cost'] * 1.5)}")
     print("0. Back")
 
+def print_shop_fields(data):
+    print("\n=== SHOP ===")
+    print(f"Balance: {data['balance']}")
+    print("Well, 1 Field cost 10")
+    print ("1. Buy field")
+    print("0. Back")
+
 def get_input():
     return input("> ")
