@@ -9,11 +9,16 @@ def plant_crop(data, crop, grow_time, count):
                 "planted_at": int(time.time()),
                 "grow_time": grow_time
             })
-            data["inv"][crop]["seeds"] -=1
+            data["inv"][crop]["seeds"] -= 1
         print(f"Planted {crop} {count}")
     else:
         print("No seeds = no crops, stupid")
 
+def update_shop(data):
+    now = int(time.time())
+    if now - data["shop_last_update"] >= data["shop_update_time"]:
+        for i in range(len(list(data["inv"].keys()))):
+            data["inv"][list(data["inv"].keys())[i]]["shop_seeds"] = 10
 
 def update_game(data):
     now = int(time.time())
@@ -35,6 +40,7 @@ def update_game(data):
 def buy_seeds(data, crop, count):
     if int(count) <= 0 or int(count) > data["inv"][crop]["shop_seeds"] or data["balance"] < int(count) * data["inv"][crop]["cost"]:
         return "stop"
+    data["shop_last_update"] = int(time.time())
     data["inv"][crop]["shop_seeds"] -= int(count)
     data["inv"][crop]["seeds"] += int(count)
     data["balance"] -= int(count) * data["inv"][crop]["cost"]

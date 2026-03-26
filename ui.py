@@ -18,7 +18,7 @@ def show_plant_menu(data):
 def print_inventory(data):
     print("\n=== INVENTORY ===")
     print(f"Balance: {data['balance']}")
-    print(f"Active fields: {len(data['fields'])}")
+    print(f"All your fields: {data["usable_fields"]}, Active fields: {len(data['fields'])}, Available: {data["usable_fields"] - len(data['fields'])}")
     for i in range((len(data["inv"]))):
         if data["inv"][list(data["inv"])[i]]["seeds"] !=0 or data["inv"][list(data["inv"])[i]]["crops"] != 0:
             print(f"Name: {list(data["inv"].keys())[i]}, Crops: {data["inv"][list(data["inv"].keys())[i]]['crops']}, Seeds: {data["inv"][list(data["inv"].keys())[i]]['seeds']}")

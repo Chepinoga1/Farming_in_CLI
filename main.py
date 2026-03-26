@@ -1,6 +1,6 @@
 import os
 from ui import show_menu, get_input, print_inventory, print_shop_sell, print_shop_fields
-from game_logic import update_game, plant_crop, buy_seeds, sell_seeds, buy_fields
+from game_logic import update_game, plant_crop, buy_seeds, sell_seeds, buy_fields, update_shop
 from storage import load_game, save_game
 
 
@@ -152,6 +152,7 @@ def main():
 
     while True:
         update_game(data)
+        update_shop(data)
         show_menu(data)
 
         choice = get_input()
