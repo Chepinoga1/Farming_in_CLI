@@ -1,5 +1,5 @@
 import os
-from ui import show_menu, get_input, print_inventory, print_shop_sell, print_shop_fields
+from ui import show_menu, get_input, print_inventory, print_shop_sell, print_shop_fields, print_buildings_menu
 from game_logic import update_game, plant_crop, buy_seeds, sell_seeds, buy_fields, update_shop
 from storage import load_game, save_game
 
@@ -10,6 +10,7 @@ def handle_choice(choice, data):
         "1": get_crop_choice,
         "2": print_inventory,
         "3": shop,
+        "4": print_buildings_menu,
         "0": exit
     }
     action = actions.get(choice)
@@ -67,6 +68,7 @@ def shop(data):
     print("1. Buy seeds")
     print("2. Sell crops")
     print("3. Buy fields")
+    print("4. Buy buildings")
     print("0. Back")
     choice = get_input()
     if choice == "0":
@@ -142,6 +144,16 @@ def shop(data):
                 print("Invalid, suka")
                 return "stop"
             buy_fields(data, int(count))
+    elif choice == "4":
+        print_buildings_menu(data)
+        choice = get_input()
+        if choice == "0":
+            try:
+                int(choice)
+            except:
+                print("Unknown command")
+                return "stop"
+            return "stop"
     else :
         print("Unknown command")
         return "stop"

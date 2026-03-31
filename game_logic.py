@@ -65,3 +65,7 @@ def buy_fields(data, count):
     else:
         print("Deneg net, sosi hui")
         return None
+def buy_buildings(data):
+    if data["balance"] > data["build_cost"]:
+        data["availability"] = True
+        data["balance"] -= data["build_cost"]

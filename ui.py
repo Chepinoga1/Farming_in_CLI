@@ -44,5 +44,10 @@ def print_shop_fields(data):
     print ("1. Buy field")
     print("0. Back")
 
+def print_buildings_menu(data):
+    print("\n=== BUILDINGS ===")
+    for i in range((len(data["buildings_start"]))):
+        print(f"{i +1}. Name: {list(data["buildings_start"].keys())[i]}, Availability: {data["buildings_start"][list(data["buildings_start"].keys())[i]]['availability']}")
+
 def get_input():
     return input("> ")
