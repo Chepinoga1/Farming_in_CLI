@@ -1,6 +1,6 @@
 import os
 from ui import show_menu, get_input, print_inventory, print_shop_sell, print_shop_fields, print_buildings_menu
-from game_logic import update_game, plant_crop, buy_seeds, sell_seeds, buy_fields, update_shop
+from game_logic import update_game, plant_crop, buy_seeds, sell_seeds, buy_fields, update_shop, buy_buildings
 from storage import load_game, save_game
 
 
@@ -36,6 +36,9 @@ def handle_choice(choice, data):
         if crop == "unknown_command":
             print("Unknown command")
             return
+    elif action == print_buildings_menu:
+        action(data)
+        return
     elif action == exit:
         save_game(data)
         action()
@@ -147,13 +150,14 @@ def shop(data):
     elif choice == "4":
         print_buildings_menu(data)
         choice = get_input()
-        if choice == "0":
+        if choice == "1":
             try:
                 int(choice)
             except:
                 print("Unknown command")
                 return "stop"
-            return "stop"
+            buy_buildings(data, (int(choice) - 1))
+
     else :
         print("Unknown command")
         return "stop"

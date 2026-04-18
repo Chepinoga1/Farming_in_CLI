@@ -39,7 +39,6 @@ def load_game():
                 "availability": False,
                 "build_cost": 100
             }
-
         }
         return {"balance": 100, "fields": [], "inv": inventory_start,"buildings_start": buildings_start, "usable_fields": 3, "field_cost": 10, "shop_update_time": 30, "shop_last_update": 0} #время обновление магаза подвергнуть правкам!!!
 

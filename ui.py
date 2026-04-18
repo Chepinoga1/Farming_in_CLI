@@ -4,6 +4,7 @@ def show_menu(data):
     print("1. Plant crops")
     print("2. Inventory")
     print("3. Shop")
+    print("4. Your buildings")
     print("0. Exit")
 
 
@@ -47,7 +48,7 @@ def print_shop_fields(data):
 def print_buildings_menu(data):
     print("\n=== BUILDINGS ===")
     for i in range((len(data["buildings_start"]))):
-        print(f"{i +1}. Name: {list(data["buildings_start"].keys())[i]}, Availability: {data["buildings_start"][list(data["buildings_start"].keys())[i]]['availability']}")
+        if data["buildings_start"][list(data["buildings_start"].keys())[i]]["availability"]: print(f"{i +1}. Name: {list(data["buildings_start"].keys())[i]}, Availability: {data["buildings_start"][list(data["buildings_start"].keys())[i]]['availability']}")
 
 def get_input():
     return input("> ")
