@@ -22,7 +22,7 @@ def bakery_usage(data):
         except:
             print("Неизвестная команда")
             return
-        if int(data["inv"]["пшеница"]['crops']) >= int(count) * data["bread"]["Белый хлеб"]["cost_index"] and int(count) > 0:
+        if int(data["inv"]["пшеница"]['crops']) >= int(count) * data["bread"]["Белый хлеб"]["cost_index"] and int(count) > 0 and int(count) <= data["buildings_start"]["Пекарня"]["slots"] - len(data["bakery"]):
             for i in range(int(count)):
                 data["bakery"].append({
                     "time_start": int(time.time()),
@@ -32,6 +32,8 @@ def bakery_usage(data):
 
             print(f"Пшеницы осталось: {data["inv"]["пшеница"]['crops']}")
             print(f"Будет готово хлеба через 1 час: {count}")
+        else:
+            print("Пекарня занята или недостаточно культур")
 
 def get_input():
     return input("> ")

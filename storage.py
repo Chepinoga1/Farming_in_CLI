@@ -48,6 +48,7 @@ def load_game():
             "Пекарня": {
                 "availability": False,
                 "build_cost": 200,
+                "slots": 10
 
             }
         }
