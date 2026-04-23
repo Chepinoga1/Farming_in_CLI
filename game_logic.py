@@ -10,9 +10,9 @@ def plant_crop(data, crop, grow_time, count):
                 "grow_time": grow_time
             })
             data["inv"][crop]["seeds"] -= 1
-        print(f"Planted {crop} {count}")
+        print(f"Посажено {crop} {count}")
     else:
-        print("No seeds = no crops, stupid")
+        print("Недостаточно семян")
 
 def update_shop(data):
     now = int(time.time())
@@ -23,19 +23,27 @@ def update_shop(data):
 def update_game(data):
     now = int(time.time())
     ready = []
-
+    ready_bread = []
     for field in data["fields"]:
         if now - field["planted_at"] >= field["grow_time"]:
             ready.append(field)
+    for bread in data["bakery"]:
+        if now - bread["time_start"] >= bread["time_end"]:
+            ready_bread.append(bread)
 
     def harvest_crop(data, crop):
         data["inv"][crop]["crops"] += 1
         data["inv"][crop]["seeds"] += rchoice([0, 0, 0, 0, 0, 0, 0, 0, 0, 1])
 
     for field in ready:
-        print(f"Harvested: {field['crop']}")
+        print(f"Выросло: {field["crop"]}")
         data["fields"].remove(field)
         harvest_crop(data, field["crop"])
+
+    for bread in ready_bread:
+        print(f"Хлеб готов")
+        data["bakery"].remove(bread)
+        data["bread"]["Белый хлеб"]['bread']+=1
 
 def buy_seeds(data, crop, count):
     if int(count) <= 0 or int(count) > data["inv"][crop]["shop_seeds"] or data["balance"] < int(count) * data["inv"][crop]["cost"]:
@@ -44,26 +52,26 @@ def buy_seeds(data, crop, count):
     data["inv"][crop]["shop_seeds"] -= int(count)
     data["inv"][crop]["seeds"] += int(count)
     data["balance"] -= int(count) * data["inv"][crop]["cost"]
-    print(f"Buying {count} seeds {crop}")
+    print(f"Куплено {count} семян {crop}")
     return None
 
 def sell_seeds(data, crop, count):
     if int(count) <= 0 or int(count) > data["inv"][crop]["crops"]:
-        print("Invalid, suka!")
+        print("Невозможное дейтвие")
         return "stop"
     data["inv"][crop]["crops"] -= int(count)
     data["balance"] += int(int(count) * data["inv"][crop]["cost"] * 1.5)
-    print(f"Selling {count} crops {crop}")
+    print(f"Продано {count} культуры {crop}")
     return None
 
 def buy_fields(data, count):
     if int(count) > 0 and int(count) * data["field_cost"] <= data["balance"]:
         data["usable_fields"] += int(count)
         data["balance"] -= int(count) * data["field_cost"]
-        print(f"Buying {count} fields")
+        print(f"Куплено {count} полей")
         return None
     else:
-        print("Deneg net, sosi hui")
+        print("Недостаточно средств")
         return None
 def buy_buildings(data, choice):
     if data["balance"] >= data["buildings_start"][list(data["buildings_start"])[choice]]["build_cost"]:
@@ -71,4 +79,13 @@ def buy_buildings(data, choice):
         data["buildings_start"][list(data["buildings_start"])[choice]]["availability"] = True
         data["balance"] -= data["buildings_start"][list(data["buildings_start"])[choice]]["build_cost"]
     else:
-        print("Deneg net, sosi hui")
+        print("Недостаточно средств")
+def sell_bread(data, count, key_bread):
+    if int(count) <= 0 or int(count) > data["bread"][key_bread]["bread"]:
+        print("Нет такой команды")
+        return "stop"
+    data["bread"][key_bread]["bread"] -= int(count)
+    data["balance"] += (int(count) * data["bread"][key_bread]["cost"])
+    print(f"Продано {count} культуры {key_bread}")
+    return None
+

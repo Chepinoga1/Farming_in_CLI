@@ -1,7 +1,8 @@
 import os
-from ui import show_menu, get_input, print_inventory, print_shop_sell, print_shop_fields, print_buildings_menu
-from game_logic import update_game, plant_crop, buy_seeds, sell_seeds, buy_fields, update_shop, buy_buildings
+from ui import show_menu, get_input, print_inventory, print_shop_sell, print_shop_fields, print_buildings_menu, print_shop_sell_for_all, print_buy_buildings_menu
+from game_logic import update_game, plant_crop, buy_seeds, sell_seeds, buy_fields, update_shop, buy_buildings, sell_bread
 from storage import load_game, save_game
+from usage import bakery_usage
 
 
 
@@ -21,9 +22,9 @@ def handle_choice(choice, data):
         if crop_data == "stop":
             return
         if crop_data == "unknown_command":
-            print("Unknown command")
+            print("Неизвестная команда")
             return
-        print("How many?")
+        print("Сколько?")
         count = get_input()
         plant_crop(data, crop_data["name"], crop_data["time"], count)
     elif action == print_inventory:
@@ -34,16 +35,20 @@ def handle_choice(choice, data):
         if crop == "stop":
             return
         if crop == "unknown_command":
-            print("Unknown command")
+            print("Неизвестная команда")
             return
     elif action == print_buildings_menu:
         action(data)
-        return
+        choice = get_input()
+        if choice == "1" and data["buildings_start"]["Пекарня"]["availability"]:
+            bakery_usage(data)
+
+
     elif action == exit:
         save_game(data)
         action()
     else:
-        print("Unknown command")
+        print("Неизвестная команда")
 
 
 def get_crop_choice(data):
@@ -55,10 +60,10 @@ def get_crop_choice(data):
     try:
         int(choice)
     except:
-        print("Unknown command")
+        print("Неизвестная команда")
         return "stop"
     if int(choice) - 1 not in range(len(data["inv"])):
-        print("Unknown command")
+        print("Неизвестная команда")
         return "stop"
     crops = {}
     for i in range(len(data["inv"])):
@@ -67,12 +72,13 @@ def get_crop_choice(data):
 
 def shop(data):
     from ui import print_shop
-    print("\n=== What would you like to do? ===")
-    print("1. Buy seeds")
-    print("2. Sell crops")
-    print("3. Buy fields")
-    print("4. Buy buildings")
-    print("0. Back")
+    print("\n=== Что бы вы хотели сделать? ===")
+    print("1. Купить семена")
+    print("2. Продать культуры")
+    print("3. Купить новые поля")
+    print("4. Построить здания")
+    print("5. Продать продукцию")
+    print("0. Выйти")
     choice = get_input()
     if choice == "0":
         return "stop"
@@ -84,26 +90,25 @@ def shop(data):
         try:
             int(choice)
         except:
-            print("Unknown command")
+            print("Неизвестная команда")
             return "stop"
         if int(choice) - 1 not in range(len(data["inv"])):
-            print("Unknown command")
+            print("Неизвестная команда")
             return "stop"
         crops = {}
         for i in range(len(data["inv"])):
             crops[str(i + 1)] = {"name": list(data["inv"])[i]}
-        print("How many?")
+        print("Сколько?")
         count = input("> ")
         try:
             int(count)
         except:
-            print("Unknown command")
+            print("Неизвестная команда")
             return
         #return crops.get(choice), count
         buy_seeds(data, crops.get(choice)["name"], count)
 
     elif choice == "2":
-        #print("Coming soon")
         print_shop_sell(data)
         choice = get_input()
         if choice == "0":
@@ -111,22 +116,22 @@ def shop(data):
         try:
             int(choice)
         except:
-            print("Unknown command")
+            print("Неизвестная команда")
             return "stop"
         if int(choice) - 1 not in range(len(data["inv"])):
-            print("Unknown command")
+            print("Неизвестная команда")
             return "stop"
         crops = {}
         for i in range(len(data["inv"])):
             crops[str(i + 1)] = {"name": list(data["inv"])[i]}
-        print("How many?")
+        print("Сколько?")
         count = input("> ")
         try:
             int(count)
         except:
-            print("Unknown command")
+            print("Неизвестная команда")
             return "stop"
-        #return crops.get(choice), count
+
         sell_seeds(data, crops.get(choice)["name"], count)
     elif choice == "3":
         print_shop_fields(data)
@@ -135,31 +140,54 @@ def shop(data):
             try:
                 int(choice)
             except:
-                print("Unknown command")
+                print("Неизвестная команда")
                 return "stop"
             return "stop"
         if choice == "1":
-            print("How many?")
+            print("Сколько?")
             count = input("> ")
             try:
                 int(count)
             except:
-                print("Invalid, suka")
+                print("Неизвестная команда")
                 return "stop"
             buy_fields(data, int(count))
     elif choice == "4":
-        print_buildings_menu(data)
+        print_buy_buildings_menu(data)
         choice = get_input()
         if choice == "1":
             try:
                 int(choice)
             except:
-                print("Unknown command")
+                print("Неизвестная команда")
                 return "stop"
             buy_buildings(data, (int(choice) - 1))
-
+    elif choice == '5':
+        print_shop_sell_for_all(data)
+        choice = get_input()
+        if choice == "0":
+            return "stop"
+        try:
+            int(choice)
+        except:
+            print("Неизвестная команда")
+            return "stop"
+        if int(choice) - 1 not in range(len(data["bread"])):
+            print("Неизвестная команда")
+            return "stop"
+        bread_inv = {}
+        for i in range(len(data["bread"])):
+            bread_inv[str(i + 1)] = {"name": list(data["bread"])[i]}
+            print("Сколько?")
+            count = get_input()
+            try:
+                int(count)
+            except:
+                print("Неизвестная команда")
+                return "stop"
+            sell_bread(data, count, bread_inv.get(choice)["name"])
     else :
-        print("Unknown command")
+        print("Неизвестная команда")
         return "stop"
 
 
