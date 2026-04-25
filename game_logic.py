@@ -12,7 +12,7 @@ def plant_crop(data, crop, grow_time, count):
             data["inv"][crop]["seeds"] -= 1
         print(f"Посажено {crop} {count}")
     else:
-        print("Недостаточно семян")
+        print("Недостаточно семян или свободных полей")
 
 def update_shop(data):
     now = int(time.time())
@@ -47,6 +47,7 @@ def update_game(data):
 
 def buy_seeds(data, crop, count):
     if int(count) <= 0 or int(count) > data["inv"][crop]["shop_seeds"] or data["balance"] < int(count) * data["inv"][crop]["cost"]:
+        print("Недостаточно средств или семян в магазине")
         return "stop"
     data["shop_last_update"] = int(time.time())
     data["inv"][crop]["shop_seeds"] -= int(count)
@@ -86,6 +87,6 @@ def sell_bread(data, count, key_bread):
         return "stop"
     data["bread"][key_bread]["bread"] -= int(count)
     data["balance"] += (int(count) * data["bread"][key_bread]["cost"])
-    print(f"Продано {count} культуры {key_bread}")
+    print(f"Продано {count} {key_bread}")
     return None
 

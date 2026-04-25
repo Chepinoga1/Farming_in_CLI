@@ -73,7 +73,7 @@ def print_buy_buildings_menu(data):
     print("\n=== ПОСТРОЙКА ===")
     for i in range((len(data["buildings_start"]))):
         if data["buildings_start"][list(data["buildings_start"].keys())[i]]["availability"] == False:
-            print(f"{i + 1}. Приобрести здание {list(data["buildings_start"].keys())[i]}")
+            print(f"{i + 1}. Приобрести здание {list(data["buildings_start"].keys())[i]} за {data["buildings_start"][list(data["buildings_start"].keys())[i]]["build_cost"]}")
     print('0. Выйти')
 def get_input():
     return input("> ")

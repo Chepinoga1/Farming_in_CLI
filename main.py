@@ -31,6 +31,7 @@ def handle_choice(choice, data):
         os.system('cls' if os.name == 'nt' else 'clear')
         action(data)
     elif action == shop:
+        os.system('cls' if os.name == 'nt' else 'clear')
         crop = action(data)
         if crop == "stop":
             return
@@ -38,6 +39,7 @@ def handle_choice(choice, data):
             print("Неизвестная команда")
             return
     elif action == print_buildings_menu:
+        os.system('cls' if os.name == 'nt' else 'clear')
         action(data)
         choice = get_input()
         if choice == "1" and data["buildings_start"]["Пекарня"]["availability"]:
