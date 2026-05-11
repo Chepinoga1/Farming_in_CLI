@@ -1,4 +1,7 @@
 import time
+from random import choice
+from animals import milking
+
 
 def bakery_usage(data):
     print("\n=== ПЕКАРНЯ  ===")
@@ -35,5 +38,21 @@ def bakery_usage(data):
         else:
             print("Пекарня занята или недостаточно культур")
 
+def corral_usage(data):
+    print("\n=== ЗАГОН  ===")
+    j = 1
+    for i in list(data['animals'].keys()):
+        print(f"{j}. {data['animals'][i].get('animal_type')}: имя: {data['animals'][i].get('name')}, пол: {data['animals'][i].get('gender')}")
+        j = j + 1
+    print("0. Выйти")
+    now = time.time()
+    choice = get_input()
+    try:
+        int(choice)
+    except:
+        print('Неизвестная команда')
+    if choice == '0':
+        return
+    milking(data, int(choice), now)
 def get_input():
     return input("> ")

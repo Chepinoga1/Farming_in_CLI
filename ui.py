@@ -44,11 +44,16 @@ def print_shop_sell(data):
     print("0. Back")
 #для всего, для доп элементов добавлять параметры в новый for
 def print_shop_sell_for_all(data):
+    j = 0
     print("\n=== МАГАЗИН ===")
     print(f"Баланс: {data['balance']}")
-    for i in range((len(data["bread"]))):
-        print(f"{i + 1}. Название: {list(data["bread"].keys())[i]}, Количество: {data["bread"][list(data["bread"].keys())[i]]["bread"]}")
-
+    print('Хлеба:')
+    for i in range((len(data['items']["bread"]))):
+        j+=1
+        print(f"{i + 1}. Название: {list(data['items']["bread"].keys())[i]}, Количество: {data['items']["bread"][list(data['items']["bread"].keys())[i]]["bread"]}")
+    print('Молоко:')
+    for i in range((len(data['items']["milks"]))):
+        print(f"{j + 1}. Название: {list(data['items']["milks"].keys())[i]}, Количество: {data['items']["milks"][list(data['items']["milks"].keys())[i]]["count"]}")
 def print_shop_fields(data):
     print("\n=== МАГАЗИН ===")
     print(f"Баланс: {data['balance']}")
@@ -75,5 +80,14 @@ def print_buy_buildings_menu(data):
         if data["buildings_start"][list(data["buildings_start"].keys())[i]]["availability"] == False:
             print(f"{i + 1}. Приобрести здание {list(data["buildings_start"].keys())[i]} за {data["buildings_start"][list(data["buildings_start"].keys())[i]]["build_cost"]}")
     print('0. Выйти')
+
+def print_buy_animals_menu(data):
+    print("\n=== СКОТ ===")
+    j = 1
+    for i in list(data["animals_cost"].keys()):
+        print(f"{j}. Приобрести животное {i} за {data['animals_cost'][i]}")
+        j += 1
+    print("0. Выйти")
+
 def get_input():
     return input("> ")

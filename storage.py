@@ -21,6 +21,13 @@ def load_game():
                 "shop_seeds": 10,
                 "cost": 20
             },
+            "овес": {
+                "seeds": 0,
+                "crops": 0,
+                "time": 150,
+                "shop_seeds": 10,
+                "cost": 30
+            },
             "морковь": {
                 "seeds": 0,
                 "crops": 0,
@@ -36,13 +43,21 @@ def load_game():
                 "cost": 100
             }
         }
-        bread = {
-            "Белый хлеб": {
-                'bread': 0,
-                'cost_index': 3, #стоимость приготовления в культуре
-                "bread_time": 3600,
-                "cost": 150
+        items = {
+            'bread': {
+                "Белый хлеб": {
+                    'bread': 0,
+                    'cost_index': 3, #стоимость приготовления в культуре
+                    "bread_time": 3600,
+                    "cost": 150
+                }
+            },
+            'milks': {
+            'Козье молоко': {'count': 0, 'cost': 120}
             }
+        }
+        animals_cost = {
+            "Коза": 1000
         }
         buildings_start = {
             "Пекарня": {
@@ -50,9 +65,17 @@ def load_game():
                 "build_cost": 200,
                 "slots": 10
 
+            },
+            "Загон": {
+                "availability": False,
+                "build_cost": 10000,
+                "slots": 10,
+
             }
         }
-        return {"balance": 100, "fields": [], "bakery": [], "inv": inventory_start, "bread": bread,"buildings_start": buildings_start, "usable_fields": 3, "field_cost": 100, "shop_update_time": 86400, "shop_last_update": 0} #время обновление магаза подвергнуть правкам!!!
+
+        animals = {}
+        return {"balance": 100, "fields": [], "bakery": [], "inv": inventory_start, "items": items,"buildings_start": buildings_start, "usable_fields": 3, "field_cost": 100, "shop_update_time": 86400, "shop_last_update": 0, 'animals': animals, 'animals_cost': animals_cost} #время обновление магаза подвергнуть правкам!!!
 
     with open(SAVE_FILE, "r") as f:
         return json.load(f)

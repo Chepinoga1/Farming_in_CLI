@@ -1,5 +1,6 @@
 import time
 from random import choice as rchoice
+from animals import aging
 
 def plant_crop(data, crop, grow_time, count):
     if data["inv"][crop]["seeds"] >= int(count) and int(count) <= data["usable_fields"] - len(data["fields"]):
@@ -45,6 +46,12 @@ def update_game(data):
         data["bakery"].remove(bread)
         data["bread"]["Белый хлеб"]['bread']+=1
 
+    for animal in data['animals']:
+        if data['animals'][animal]['last_milking'] + 18000 <= now:
+            print(f'{animal} хочет есть')
+
+    aging(data, now)
+
 def buy_seeds(data, crop, count):
     if int(count) <= 0 or int(count) > data["inv"][crop]["shop_seeds"] or data["balance"] < int(count) * data["inv"][crop]["cost"]:
         print("Недостаточно средств или семян в магазине")
@@ -76,17 +83,17 @@ def buy_fields(data, count):
         return None
 def buy_buildings(data, choice):
     if data["balance"] >= data["buildings_start"][list(data["buildings_start"])[choice]]["build_cost"]:
-        #data[choice]["availability"] = True
         data["buildings_start"][list(data["buildings_start"])[choice]]["availability"] = True
         data["balance"] -= data["buildings_start"][list(data["buildings_start"])[choice]]["build_cost"]
+        print("Успешно!")
     else:
         print("Недостаточно средств")
 def sell_bread(data, count, key_bread):
-    if int(count) <= 0 or int(count) > data["bread"][key_bread]["bread"]:
+    if int(count) <= 0 or int(count) > data['items']["bread"][key_bread]["bread"]:
         print("Нет такой команды")
         return "stop"
-    data["bread"][key_bread]["bread"] -= int(count)
-    data["balance"] += (int(count) * data["bread"][key_bread]["cost"])
+    data['items']["bread"][key_bread]["bread"] -= int(count)
+    data["balance"] += (int(count) * data['items']["bread"][key_bread]["cost"])
     print(f"Продано {count} {key_bread}")
     return None
 

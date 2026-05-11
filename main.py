@@ -1,8 +1,9 @@
 import os
-from ui import show_menu, get_input, print_inventory, print_shop_sell, print_shop_fields, print_buildings_menu, print_shop_sell_for_all, print_buy_buildings_menu
-from game_logic import update_game, plant_crop, buy_seeds, sell_seeds, buy_fields, update_shop, buy_buildings, sell_bread
-from storage import load_game, save_game
-from usage import bakery_usage
+from ui import *
+from game_logic import *
+from storage import *
+from usage import *
+from animals import *
 
 
 
@@ -44,6 +45,9 @@ def handle_choice(choice, data):
         choice = get_input()
         if choice == "1" and data["buildings_start"]["Пекарня"]["availability"]:
             bakery_usage(data)
+        elif choice == "2" and data["buildings_start"]["Загон"]["availability"]:
+            corral_usage(data)
+
 
 
     elif action == exit:
@@ -80,6 +84,7 @@ def shop(data):
     print("3. Купить новые поля")
     print("4. Построить здания")
     print("5. Продать продукцию")
+    print("6. Купить скот")
     print("0. Выйти")
     choice = get_input()
     if choice == "0":
@@ -157,13 +162,15 @@ def shop(data):
     elif choice == "4":
         print_buy_buildings_menu(data)
         choice = get_input()
-        if choice == "1":
-            try:
-                int(choice)
-            except:
-                print("Неизвестная команда")
-                return "stop"
+        try:
+            int(choice)
+        except:
+            print("Неизвестная команда")
+            return "stop"
+        if int(choice) - 1 in range(len(data["buildings_start"])):
             buy_buildings(data, (int(choice) - 1))
+        else:
+            print("Неизвестная команда")
     elif choice == '5':
         print_shop_sell_for_all(data)
         choice = get_input()
@@ -174,12 +181,12 @@ def shop(data):
         except:
             print("Неизвестная команда")
             return "stop"
-        if int(choice) - 1 not in range(len(data["bread"])):
+        if int(choice) - 1 not in range(len(data['items']["bread"])):
             print("Неизвестная команда")
             return "stop"
         bread_inv = {}
-        for i in range(len(data["bread"])):
-            bread_inv[str(i + 1)] = {"name": list(data["bread"])[i]}
+        for i in range(len(data['items']["bread"])):
+            bread_inv[str(i + 1)] = {"name": list(data['items']["bread"])[i]}
             print("Сколько?")
             count = get_input()
             try:
@@ -188,6 +195,21 @@ def shop(data):
                 print("Неизвестная команда")
                 return "stop"
             sell_bread(data, count, bread_inv.get(choice)["name"])
+    elif choice == "6":
+        print_buy_animals_menu(data)
+        choice = get_input()
+        try:
+            int(choice)
+        except:
+            print("Неизвестная команда")
+            return
+        if choice == "1":
+             buy_goat(data)
+        elif choice == "0":
+            return
+        else:
+            print("Неизвестная команда")
+            return
     else :
         print("Неизвестная команда")
         return "stop"
@@ -195,8 +217,10 @@ def shop(data):
 
 def main():
     data = load_game()
+    dead(data)
 
     while True:
+        #try:
         update_game(data)
         update_shop(data)
         show_menu(data)
@@ -206,6 +230,10 @@ def main():
 
         save_game(data)
 
+        #except:
+         #   print('Произошла ошибка, но игра была сохранена)')
+          #  save_game(data)   # Ну если уж ошибка бует то хотябы не такая кривая. убрать комент на релизе
+           # exit(0)
 
 if __name__ == "__main__":
     main()
